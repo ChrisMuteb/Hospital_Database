@@ -5,19 +5,25 @@ USE `hospital_directory`;
 -- Table structure
 --
 DROP TABLE IF EXISTS `doctor`;
+DROP TABLE IF EXISTS `appointment`;
+DROP TABLE IF EXISTS `patient`;
+DROP TABLE IF EXISTS `bill`;
+DROP TABLE IF EXISTS `payment`;
+DROP TABLE IF EXISTS `insurance`;
+
 CREATE TABLE `doctor`
 (
-    `doc_id` INT NOT NULL,
+    `doc_id` INT NOT NULL AUTO_INCREMENT primary key,
     `doc_firstname` varchar(45) DEFAULT NULL,
     `doc_lastname` varchar(45) DEFAULT NULL
 );
 --
 -- Table structure for table `appointment`
 --
-DROP TABLE IF EXISTS `appointment`;
+
 CREATE TABLE `appointment`
 (
-	`app_id` int NOT NULL,
+	`app_id` int NOT NULL AUTO_INCREMENT primary key,
     `doc_id` int NOT NULL,
     `pat_id` int NOT NULL,
     `bill_id` int NOT NULL,
@@ -30,10 +36,10 @@ CREATE TABLE `appointment`
 --
 -- Table structure for table `patient`
 --
-DROP TABLE IF EXISTS `patient`;
+
 CREATE TABLE `patient`
 (
-    `pat_id` int NOT NULL,
+    `pat_id` int NOT NULL AUTO_INCREMENT primary key,
     `pat_firstname` varchar(45),
     `pat_lastname` varchar(45),
     `pat_address` varchar(45),
@@ -45,10 +51,10 @@ CREATE TABLE `patient`
 --
 -- Table structure for table `bill`
 --
-DROP TABLE IF EXISTS `bill`;
+
 CREATE TABLE `bill`
 (
-    `bill_id` int NOT NULL,
+    `bill_id` int NOT NULL AUTO_INCREMENT primary key,
     `bill_amountinsured` int default null,
     `bill_amountnotinsured` int default null,
     `bill_datesent` varchar(45),
@@ -57,10 +63,10 @@ CREATE TABLE `bill`
 --
 -- Table structure for table `payment`
 --
-DROP TABLE IF EXISTS `payment`;
+
 CREATE TABLE `payment`
 (
-    `pay_id` int NOT NULL,
+    `pay_id` int NOT NULL AUTO_INCREMENT primary key,
     `pay_amount` int default null,
     `pay_date` varchar(45) default null,
     `pay_method` varchar(45) default null,
@@ -71,10 +77,10 @@ CREATE TABLE `payment`
 --
 -- Table structure for table `insurance`
 --
-DROP TABLE IF EXISTS `insurance`;
+
 CREATE TABLE `insurance`
 (
-    `ins_id` int NOT NULL,
+    `ins_id` int NOT NULL AUTO_INCREMENT primary key,
     `ins_benefitcontact` varchar(45),
     `ins_phonenumber` varchar(45),
     `ins_claimaddress` varchar(45)
@@ -137,30 +143,30 @@ insert into `insurance` values
 --
 -- Primary Keys
 --
-alter table `doctor` add constraint `doc_pk` primary key (`doc_id`);
+-- alter table `doctor` add constraint `doc_pk` primary key (`doc_id`);
 
-alter table `appointment` add constraint `app_pk` primary key (`app_id`);
+-- alter table `appointment` add constraint `app_pk` primary key (`app_id`);
 
-alter table `patient` add constraint `pat_pk` primary key (`pat_id`);
+-- alter table `patient` add constraint `pat_pk` primary key (`pat_id`);
 
-alter table `bill` add constraint `bill_pk` primary key (`bill_id`);
+-- alter table `bill` add constraint `bill_pk` primary key (`bill_id`);
 
-alter table `payment` add constraint `pay_pk` primary key (`pay_id`);
+-- alter table `payment` add constraint `pay_pk` primary key (`pay_id`);
 
-alter table `insurance` add constraint `ins_pk` primary key (`ins_id`);
+-- alter table `insurance` add constraint `ins_pk` primary key (`ins_id`);
 
 --
 -- Foreign Keys
 --
-alter table `appointment` add constraint `app_doc_fk` foreign key (`doc_id`) references doctor(`doc_id`);
-alter table `appointment` add constraint `app_pat_fk` foreign key (`pat_id`) references patient(`pat_id`);
-alter table `appointment` add constraint `app_bill_fk` foreign key (`bill_id`) references bill(`bill_id`);
+alter table `appointment` add constraint `app_doc_fk` foreign key (`doc_id`) references doctor(`doc_id`) on delete cascade;
+alter table `appointment` add constraint `app_pat_fk` foreign key (`pat_id`) references patient(`pat_id`) on delete cascade;
+alter table `appointment` add constraint `app_bill_fk` foreign key (`bill_id`) references bill(`bill_id`) on delete cascade;
 
-alter table `patient` add constraint `pat_ins_fk` foreign key (`ins_id`) references insurance(`ins_id`);
+alter table `patient` add constraint `pat_ins_fk` foreign key (`ins_id`) references insurance(`ins_id`) on delete cascade;
 
-alter table `payment` add constraint `pay_pat_fk` foreign key (`pat_id`) references patient(`pat_id`);
-alter table `payment` add constraint `pay_bill_fk` foreign key (`bill_id`) references bill(`bill_id`);
-alter table `payment` add constraint `pay_ins_fk` foreign key (`ins_id`) references insurance(`ins_id`);
+alter table `payment` add constraint `pay_pat_fk` foreign key (`pat_id`) references patient(`pat_id`) on delete cascade;
+alter table `payment` add constraint `pay_bill_fk` foreign key (`bill_id`) references bill(`bill_id`) on delete cascade;
+alter table `payment` add constraint `pay_ins_fk` foreign key (`ins_id`) references insurance(`ins_id`) on delete cascade;
 
 
 
